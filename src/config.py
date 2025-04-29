@@ -1,5 +1,5 @@
-TRAIN_FILE = "../data/Rest-Mex_2025_train.csv"
-TEST_FILE = None # Aún no liberan el test set
+TRAIN_FILE = "../data/train/Rest-Mex_2025_train.csv"
+TEST_FILE = "../data/test/Rest-Mex_2025_test.csv"
 
 # Targets
 TARGET1 = "Polarity"
