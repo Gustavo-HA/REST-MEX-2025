@@ -10,7 +10,7 @@ import re
 from functools import lru_cache
 import config
 from sklearn.base import BaseEstimator, TransformerMixin
-
+from nltk import SnowballStemmer
 
 class ArreglaMojibake(BaseEstimator, TransformerMixin):
     """
@@ -78,6 +78,38 @@ class QuitaStopwords(BaseEstimator, TransformerMixin):
         palabras = texto.split()
         palabras_filtradas = [palabra for palabra in palabras if palabra not in self.stopwords]
         return ' '.join(palabras_filtradas)
+    
+    
+class SpanishStemmer(BaseEstimator, TransformerMixin):
+    """
+    Transformer de scikit-learn para aplicar stemming en textos en español.
+    """
+    def __init__(self, variables, lang='spanish'):
+        self.variables = variables
+        self.stemmer = SnowballStemmer(lang)
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X : pd.DataFrame):
+        """
+        Aplica la transformación para aplicar stemming en una lista o serie de textos.
+        """
+        X = X.copy()
+        for variable in self.variables:
+            X[variable] = X[variable].apply(self._stem)
+        return X
+
+    def _stem(self, texto: str) -> str:
+        """
+        Aplica el stemming a un texto.
+        """
+        if not isinstance(texto, str):
+            return " "
+        
+        palabras = texto.split()
+        palabras_stemmed = [self.stemmer.stem(palabra) for palabra in palabras]
+        return ' '.join(palabras_stemmed)
     
     
 class DropFeatures(BaseEstimator, TransformerMixin):
