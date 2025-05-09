@@ -11,6 +11,7 @@ from functools import lru_cache
 import config
 from sklearn.base import BaseEstimator, TransformerMixin
 from nltk import SnowballStemmer
+from sklearn.pipeline import Pipeline
 
 class ArreglaMojibake(BaseEstimator, TransformerMixin):
     """
@@ -141,3 +142,31 @@ class JuntarFeatures(BaseEstimator, TransformerMixin):
         X[self.new_column] = X[self.variables_to_join].agg(" ".join, axis = 1)
         X[self.new_column] = X[self.new_column].str.strip()
         return X
+    
+
+# Pipeline para el dataset de RESTMEX.
+pp_pipeline = Pipeline(
+    [
+        ('Arreglar mojibakes', ArreglaMojibake(config.TEXT_COLUMNS)),
+        ("Minúsculas y quitar stopwords", QuitaStopwords(config.TEXT_COLUMNS)),
+        ("Stemming", SpanishStemmer(config.TEXT_COLUMNS)),
+        ("Guardar en una columna", JuntarFeatures(config.TEXT_COLUMNS, config.NEW_COLUMN)),
+        ("Quitar features no deseadas", DropFeatures(config.TEXT_COLUMNS))
+    ]
+)
+
+
+    
+
+if __name__ == "__main__":
+    import io
+    
+    csv_data = """Title,Review,Polarity,Town,Region,Type
+Mi Lugar Favorito!!!!,"Excelente lugar para comer y pasar una buena noche!!! El servicio es de primera y la comida exquisita!!!",5.0,Sayulita,Nayarit,Restaurant
+lugares interesantes para visitar,"andar mucho, así que un poco difícil para personas con niños pequeños, pero con mucha historia en la zona, y la diversión de aprender un poco de todo, y explorar las ruinas. La playa también era bastante agradable!",4.0,Tulum,QuintanaRoo,Attractive"""
+    df = pd.read_csv(io.StringIO((csv_data)))
+    
+    # Test the transformers
+    
+    df = pp_pipeline.fit_transform(df)
+    print(df.head())
