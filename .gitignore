@@ -172,3 +172,12 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Archivos de datos grandes (CSVs)
+*.csv
+
+# Checkpoints y salidas de modelos (ejemplo específico y más genérico)
+notebooks/resultados_beto/
+checkpoints/
+models_output/
+model_weights/
