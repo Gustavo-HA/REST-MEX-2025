@@ -1,6 +1,6 @@
 # REST-MEX 2025 – CIMAT-CC Submission
 
-This repository contains the code and models used in the participation of the **CIMAT-CC** team at the [REST-MEX 2025](https://sites.google.com/view/rest-mex/) shared task, part of **IberLEF@SEPLN 2025**. The competition focuses on sentiment analysis and text classification in Spanish-language tourism reviews related to Mexican **Pueblos Mágicos**.
+This repository contains the code and models used in the participation of the **CIMAT-CC** team at the **REST-MEX 2025** shared task, part of **IberLEF@SEPLN 2025**. The competition focuses on sentiment analysis and text classification in Spanish-language tourism reviews related to Mexican **Pueblos Mágicos**.
 
 ## Tasks Addressed
 
